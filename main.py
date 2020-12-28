@@ -1,16 +1,17 @@
 import os
 import requests
+import time
+import schedule
 from bs4 import BeautifulSoup
 
 USERNAME = os.environ["USERNAME"]
 PASSWORD = os.environ["PASSWORD"]
-PROXIES = {
-    "http": "http://127.0.0.1:10809",
-    "https": "http://127.0.0.1:10809"
-}
+TELEGRAMBOT_TOKEN = os.environ["TELEGRAMBOT_TOKEN"]
+TELEGRAMBOT_CHATID = os.environ["TELEGRAMBOT_CHATID"]
+
 HEADERS = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/83.0.4103.116 Safari/537.36",
+                  "Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.66",
     "Host": "uclub.ucloud.cn"
 }
 
@@ -49,15 +50,32 @@ def signin(session):
     print(soup.find('h1').text)
 
 
+def telegrambot_sendmessage(bot_message):
+    send_message = 'https://api.telegram.org/bot' + TELEGRAMBOT_TOKEN + '/sendMessage?chat_id=' + TELEGRAMBOT_CHATID + '&parse_mode=Markdown&text=' + bot_message
+    response = requests.get(send_message)
+    print(response.json())
+
+
 if __name__ == '__main__':
     if not USERNAME or not PASSWORD:
-        print("你没有添加账户")
+        print("你没有添加账户密码")
+        exit(1)
+    if not TELEGRAMBOT_TOKEN or not TELEGRAMBOT_CHATID:
+        print("你没有配置 TelegramBot")
         exit(1)
     s = login()
+    v_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
+    message0 = "UCloud Uclub 社区今日打卡情况：\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + USERNAME
     if not s:
-        print("登陆失败，请检查你的登录信息是否准确")
+        message1 = " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
+        message = message0 + message1
+        telegrambot_sendmessage(message)
         exit(1)
     else:
+        message1 = " - 打卡前积分为: %d"%(getCredit(s)) + "\n"
         print('登陆成功，您目前的积分为: %d' % getCredit(s))
         signin(s)
+        message2 = " - 打卡后积分为: %d"%(getCredit(s)) + "\n"
         print('签到完成，您目前的积分为: %d' % getCredit(s))
+        message = message0 + message1 + message2
+        telegrambot_sendmessage(message)
