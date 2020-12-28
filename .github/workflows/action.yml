@@ -6,7 +6,10 @@ on:
     branches:
       - main
   schedule:
-    - cron: '50 16 * * *'
+    - cron: '36 0 * * *'
+
+env:
+  TZ: Asia/Shanghai
 
 jobs:
   auto_signin:
@@ -22,11 +25,29 @@ jobs:
 
       - name: 'Install dependencies'
         run: |
+          python -m pip install --upgrade pip           
+          python -m pip install --upgrade schedule
           python -m pip install --upgrade requests
           python -m pip install --upgrade beautifulsoup4
-
       - name: 'Signin'
         env:
+          TELEGRAMBOT_TOKEN: ${{ secrets.TELEGRAMBOT_TOKEN }} 
+          TELEGRAMBOT_CHATID: ${{ secrets.TELEGRAMBOT_CHATID }}
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: python main.py
+          USERNAME: ${{ secrets.USERNAME1 }}
+          PASSWORD: ${{ secrets.PASSWORD1 }}
+          USERNAME: ${{ secrets.USERNAME2 }}
+          PASSWORD: ${{ secrets.PASSWORD2 }}
+          
+        run: |
+          date
+          python main.py
+
+          sleep 66
+          date
+          python main1.py
+
+          sleep 66
+          date
+          python main2.py
