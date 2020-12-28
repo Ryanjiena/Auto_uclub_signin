@@ -39,15 +39,24 @@ jobs:
           PASSWORD1: ${{ secrets.PASSWORD1 }}
           USERNAME2: ${{ secrets.USERNAME2 }}
           PASSWORD2: ${{ secrets.PASSWORD2 }}
+          USERNAME3: ${{ secrets.USERNAME3 }}
+          PASSWORD3: ${{ secrets.PASSWORD3 }}
           
         run: |
           date
           python main.py
 
           sleep 66
+          echo '' && echo ''
           date
           python main1.py
 
           sleep 66
+          echo '' && echo ''
           date
           python main2.py
+
+          sleep 66
+          echo '' && echo ''
+          date
+          python main3.py
