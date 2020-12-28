@@ -65,7 +65,7 @@ if __name__ == '__main__':
         exit(1)
     s = login()
     v_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) 
-    message0 = "UCloud Uclub 社区今日打卡情况：\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + USERNAME
+    message0 = "UCloud Uclub 社区今日打卡情况：\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + USERNAME + "\n"
     if not s:
         message1 = " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
         message = message0 + message1
