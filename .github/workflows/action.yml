@@ -51,7 +51,7 @@ jobs:
                   fi
 
                   echo -e '# 用户 ${user_count}\n'
-                  python3 note163.py <<-EOF
+                  python3 main.py <<-EOF
 username
 passwd
 EOF
