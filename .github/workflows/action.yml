@@ -5,11 +5,17 @@ on:
   push:
     branches:
       - main
+      - develop
   schedule:
-    - cron: "36 0 * * *"
+    - cron: "46 22,11 * * *"
 
 env:
   TZ: Asia/Shanghai
+  USERS: ${{secrets.USERS}}
+  TELEGRAMBOT_TOKEN: ${{ secrets.TELEGRAMBOT_TOKEN }}
+  TELEGRAMBOT_CHATID: ${{ secrets.TELEGRAMBOT_CHATID }}
+  PUSH_KEY: ${{secrets.PUSH_KEY}}
+  QMSG_KEY: ${{ secrets.QMSG_KEY }}
 
 jobs:
   auto_signin:
@@ -29,33 +35,32 @@ jobs:
           python -m pip install --upgrade schedule
           python -m pip install --upgrade requests
           python -m pip install --upgrade beautifulsoup4
+          if [ -f requirements.txt ]; then 
+            pip install -r requirements.txt; 
+          fi
       - name: "Signin"
-        env:
-          TELEGRAMBOT_TOKEN: ${{ secrets.TELEGRAMBOT_TOKEN }}
-          TELEGRAMBOT_CHATID: ${{ secrets.TELEGRAMBOT_CHATID }}
-          PUSH_KEY: ${{secrets.PUSH_KEY}}
-          QMSG_KEY: ${{ secrets.QMSG_KEY }}
-          USERS: ${{secrets.USERS}}
         run: |
           date
-          users_array=($(echo ${USERS} | tr ';' ' '))
+          users_array = ($(echo ${USERS} | tr ';' ' '))
 
           if [ "${users_array}" ]; then
-              user_count=1
+              user_count = 1
               for user in ${users_array[@]}; do
-                  username=$(echo ${user} | awk -F'----' '{print $1}')
-                  passwd=$(echo ${user} | awk -F'----' '{print $2}')
+                  username = $(echo ${user} | awk -F'----' '{print $1}')
+                  passwd = $(echo ${user} | awk -F'----' '{print $2}')
 
                   if [ -z "${username}" ] || [ -z "${passwd}" ]; then
                       echo "账号信息配置异常，请检查配置" && exit 1
                   fi
 
-                  echo -e '# 用户 ${user_count}:\n'
+                  info = "## 正在签到第 " + ${user_count}" + "个用户: "
+                  echo $info
                   python3 main.py <<-EOF
-                    ${username}
-                    ${passwd}
+          ${username}
+          ${passwd}
           EOF
                   user_count=$(expr ${user_count} + 1)
+                  sleep 66
               done
           else
               echo "用户组环境变量未配置" && exit 1

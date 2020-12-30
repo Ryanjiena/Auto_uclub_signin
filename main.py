@@ -12,10 +12,6 @@ TELEGRAMBOT_CHATID = os.environ["TELEGRAMBOT_CHATID"]
 username = ""
 password = ""
 
-if(username == "", password == ""):
-    username = input("账号:")
-    password = input("密码:")
-
 HEADERS = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                   "Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.66",
@@ -94,16 +90,8 @@ if __name__ == '__main__':
     message = "\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + username + "\n"
     if not s:
         message = message + " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
-        print('打卡日志：登陆失败')
+        print('登陆失败!')
         message0 = title + message
-        print(line)
-        if TELEGRAMBOT_TOKEN and TELEGRAMBOT_CHATID:
-            telegrambot_sendmessage(message0)
-        if QMSG_KEY:
-            qmsg_sendmessage(message0)
-        if PUSH_KEY:
-            sc_sendmessage(title, message)
-        exit(1)
     else:
         message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
         print('登陆成功!')
@@ -111,15 +99,18 @@ if __name__ == '__main__':
         message = message + " - 打卡后积分为: %d" % (getCredit(s)) + "\n"
         print('签到完成!')
         message0 = title + message
-        if TELEGRAMBOT_TOKEN and TELEGRAMBOT_CHATID:
-            print('检测到 TGBot 配置信息，正在尝试 TGBot 推送')
-            telegrambot_sendmessage(message0)
-            #  TGBot 推送结果分析
-        if QMSG_KEY:
-            print('检测到 Qmsg 配置信息，正在尝试 Qmsg 酱推送')
-            qmsg_sendmessage(message0)
-            #  Qmsg 推送结果分析
-        if PUSH_KEY:
-            print('检测到 Server 配置信息，正在尝试 Server 酱推送')
-            sc_sendmessage(title, message)
-            #  Server 推送结果分析
+    # TGBot 推送
+    if TELEGRAMBOT_TOKEN and TELEGRAMBOT_CHATID:
+        print('检测到 TGBot 配置信息，正在尝试 TGBot 推送')
+        telegrambot_sendmessage(message0)
+        # TGBot 推送结果分析
+    # Qmsg 酱推送
+    if QMSG_KEY:
+        print('检测到 Qmsg 配置信息，正在尝试 Qmsg 酱推送')
+        qmsg_sendmessage(message0)
+        # Qmsg 酱推送结果分析
+    # Server 酱推送
+    if PUSH_KEY:
+        print('检测到 Server 配置信息，正在尝试 Server 酱推送')
+        sc_sendmessage(title, message)
+        # Server 酱推送结果分析
