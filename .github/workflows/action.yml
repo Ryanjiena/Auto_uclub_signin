@@ -33,7 +33,7 @@ jobs:
         env:
           TELEGRAMBOT_TOKEN: ${{ secrets.TELEGRAMBOT_TOKEN }}
           TELEGRAMBOT_CHATID: ${{ secrets.TELEGRAMBOT_CHATID }}
-          # PUSH_KEY: ${{secrets.PUSH_KEY}}
+          PUSH_KEY: ${{secrets.PUSH_KEY}}
           QMSG_KEY: ${{ secrets.QMSG_KEY }}
           USERS: ${{secrets.USERS}}
         run: |

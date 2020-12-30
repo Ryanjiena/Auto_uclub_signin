@@ -5,15 +5,16 @@ import schedule
 from bs4 import BeautifulSoup
 
 QMSG_KEY = os.environ["QMSG_KEY"]
+PUSH_KEY = os.environ["PUSH_KEY"]
 TELEGRAMBOT_TOKEN = os.environ["TELEGRAMBOT_TOKEN"]
 TELEGRAMBOT_CHATID = os.environ["TELEGRAMBOT_CHATID"]
 
-user = ""
-passwd = ""
+username = ""
+password = ""
 
-if(user == "", passwd == ""):
-    user = input("账号:")
-    passwd = input("密码:")
+if(username == "", password == ""):
+    username = input("账号:")
+    password = input("密码:")
 
 HEADERS = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -36,8 +37,8 @@ def login() -> (requests.session, int):
     token = soup.find(attrs={"name": "__token__"})['value']
     data = {
         "__token__": token,
-        "account": user,
-        "password": passwd,
+        "account": username,
+        "password": password,
         "keeplogin": "1"
     }
     f = session.post(url, headers=HEADERS, data=data)
@@ -67,23 +68,30 @@ def telegrambot_sendmessage(bot_message):
         '/sendMessage?chat_id=' + TELEGRAMBOT_CHATID + \
         '&parse_mode=Markdown&text=' + bot_message
     response = requests.get(send_message)
-    print(response.json())
+    # print(response.json())
 
 
 def qmsg_sendmessage(bot_message):
     send_message = 'https://qmsg.zendee.cn/send/' + QMSG_KEY + '?msg=' + bot_message
     response = requests.get(send_message)
-    print(response.json())
+    # print(response.json())
+
+
+def sc_sendmessage(bot_title, bot_message):
+    send_message = 'https://sc.ftqq.com/' + PUSH_KEY + \
+        '.send?text=' + bot_title + '&desp=' + bot_message
+    response = requests.get(send_message)
+    # print(response.json())
 
 
 if __name__ == '__main__':
-    if not user or not passwd:
+    if not username or not password:
         print("你没有添加账户密码")
         exit(1)
     s = login()
     v_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    title = "\n UCloud Uclub 社区今日打卡情况：\n\n"
-    message = " - 打卡时间：" + v_time + "\n - 打卡用户：" + user + "\n"
+    title = "UCloud Uclub 社区今日打卡情况"
+    message = "\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + username + "\n"
     if not s:
         message = message + " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
         print('打卡日志：登陆失败')
@@ -93,6 +101,8 @@ if __name__ == '__main__':
             telegrambot_sendmessage(message0)
         if QMSG_KEY:
             qmsg_sendmessage(message0)
+        if PUSH_KEY:
+            sc_sendmessage(title, message)
         exit(1)
     else:
         message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
@@ -105,7 +115,11 @@ if __name__ == '__main__':
             print('检测到 TGBot 配置信息，正在尝试 TGBot 推送')
             telegrambot_sendmessage(message0)
             #  TGBot 推送结果分析
-        # if QMSG_KEY:
+        if QMSG_KEY:
             print('检测到 Qmsg 配置信息，正在尝试 Qmsg 酱推送')
             qmsg_sendmessage(message0)
             #  Qmsg 推送结果分析
+        if PUSH_KEY:
+            print('检测到 Server 配置信息，正在尝试 Server 酱推送')
+            sc_sendmessage(title, message)
+            #  Server 推送结果分析
