@@ -50,13 +50,10 @@ jobs:
                       echo "账号信息配置异常，请检查配置" && exit 1
                   fi
 
-                  echo -e '# 用户 ${user_count}\n'
-                  python3 main.py <<-EOF
-                  username
-                  passwd
+                  echo -e '# 用户 ${user_count}:\n'
+                  python3 main.py <<EOF
+                    username
+                    passwd
                   EOF
                   user_count=$(expr ${user_count} + 1)
               done
-          else
-              echo "用户组环境变量未配置" && exit 1
-          fi
