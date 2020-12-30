@@ -40,7 +40,7 @@ jobs:
           fi
       - name: "Signin"
         run: |
-          date
+          echo $(date "+%Y-%m-%d %H:%M:%S")
           users_array=($(echo ${USERS} | tr ';' ' '))
 
           if [ "${users_array}" ]; then
@@ -54,6 +54,7 @@ jobs:
                   fi
 
                   info="## 正在签到第 ${user_count} 个用户: "
+                  echo 
                   echo ${info}
                   python3 main.py <<-EOF
           ${username}
