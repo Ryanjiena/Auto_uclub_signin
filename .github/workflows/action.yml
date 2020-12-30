@@ -54,7 +54,7 @@ jobs:
                   python3 main.py <<-EOF
                     ${username}
                     ${passwd}
-                  EOF
+          EOF
                   user_count=$(expr ${user_count} + 1)
               done
           else
