@@ -1,4 +1,4 @@
-name: 'Uclub Auto Signin'
+name: "Uclub Auto Signin"
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '36 0 * * *'
+    - cron: "36 0 * * *"
 
 env:
   TZ: Asia/Shanghai
@@ -15,49 +15,48 @@ jobs:
   auto_signin:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout codes'
+      - name: "Checkout codes"
         uses: actions/checkout@v2
 
-      - name: 'Set python'
+      - name: "Set python"
         uses: actions/setup-python@v1
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
-      - name: 'Install dependencies'
+      - name: "Install dependencies"
         run: |
           python -m pip install --upgrade pip           
           python -m pip install --upgrade schedule
           python -m pip install --upgrade requests
           python -m pip install --upgrade beautifulsoup4
-      - name: 'Signin'
+      - name: "Signin"
         env:
-          TELEGRAMBOT_TOKEN: ${{ secrets.TELEGRAMBOT_TOKEN }} 
+          TELEGRAMBOT_TOKEN: ${{ secrets.TELEGRAMBOT_TOKEN }}
           TELEGRAMBOT_CHATID: ${{ secrets.TELEGRAMBOT_CHATID }}
+          # PUSH_KEY: ${{secrets.PUSH_KEY}}
           QMSG_KEY: ${{ secrets.QMSG_KEY }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          USERNAME1: ${{ secrets.USERNAME1 }}
-          PASSWORD1: ${{ secrets.PASSWORD1 }}
-          USERNAME2: ${{ secrets.USERNAME2 }}
-          PASSWORD2: ${{ secrets.PASSWORD2 }}
-          USERNAME3: ${{ secrets.USERNAME3 }}
-          PASSWORD3: ${{ secrets.PASSWORD3 }}
-          
+          USERS: ${{secrets.USERS}}
         run: |
           date
-          python main.py
+          users_array=($(echo ${USERS} | tr ';' ' '))
 
-          sleep 66
-          echo '' && echo ''
-          date
-          python main1.py
+          if [ "${users_array}" ]; then
+              user_count=1
+              for user in ${users_array[@]}; do
+                  username=$(echo ${user} | awk -F'----' '{print $1}')
+                  passwd=$(echo ${user} | awk -F'----' '{print $2}')
 
-          sleep 66
-          echo '' && echo ''
-          date
-          python main2.py
+                  if [ -z "${username}" ] || [ -z "${passwd}" ]; then
+                      echo "账号信息配置异常，请检查配置" && exit 1
+                  fi
 
-          sleep 66
-          echo '' && echo ''
-          date
-          python main3.py
+                  echo -e '# 用户 ${user_count}\n'
+                  python3 note163.py <<EOF
+                    ${user_list[$i]}
+                    ${pwd_list[$i]}
+                  EOF
+                  user_count=$(expr ${user_count} + 1)
+              done
+          else
+              echo "用户组环境变量未配置" && exit 1
+          fi

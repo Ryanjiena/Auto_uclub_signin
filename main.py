@@ -4,17 +4,28 @@ import time
 import schedule
 from bs4 import BeautifulSoup
 
-USERNAME = os.environ["USERNAME"]
-PASSWORD = os.environ["PASSWORD"]
 QMSG_KEY = os.environ["QMSG_KEY"]
 TELEGRAMBOT_TOKEN = os.environ["TELEGRAMBOT_TOKEN"]
 TELEGRAMBOT_CHATID = os.environ["TELEGRAMBOT_CHATID"]
+
+user = ""
+passwd = ""
+
+if(user == "", passwd == ""):
+    user = input("账号:")
+    passwd = input("密码:")
 
 HEADERS = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                   "Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.66",
     "Host": "uclub.ucloud.cn"
 }
+
+# HEADERS = {
+#     "user-agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) "
+#                   "Chrome/86.0.4240.112 Safari/537.36",
+#     "Host": "uclub.ucloud.cn"
+# }
 
 
 def login() -> (requests.session, int):
@@ -25,8 +36,8 @@ def login() -> (requests.session, int):
     token = soup.find(attrs={"name": "__token__"})['value']
     data = {
         "__token__": token,
-        "account": USERNAME,
-        "password": PASSWORD,
+        "account": user,
+        "password": passwd,
         "keeplogin": "1"
     }
     f = session.post(url, headers=HEADERS, data=data)
@@ -66,16 +77,18 @@ def qmsg_sendmessage(bot_message):
 
 
 if __name__ == '__main__':
-    if not USERNAME or not PASSWORD:
+    if not user or not passwd:
         print("你没有添加账户密码")
         exit(1)
     s = login()
     v_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    title = "UCloud Uclub 社区今日打卡情况：\n\n"
-    message = " - 打卡时间：" + v_time + "\n - 打卡用户：" + USERNAME + "\n"
+    title = "\n UCloud Uclub 社区今日打卡情况：\n\n"
+    message = " - 打卡时间：" + v_time + "\n - 打卡用户：" + user + "\n"
     if not s:
         message = message + " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
+        print('打卡日志：登陆失败')
         message0 = title + message
+        print(line)
         if TELEGRAMBOT_TOKEN and TELEGRAMBOT_CHATID:
             telegrambot_sendmessage(message0)
         if QMSG_KEY:
@@ -83,12 +96,16 @@ if __name__ == '__main__':
         exit(1)
     else:
         message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
-        print('登陆成功，您目前的积分为: %d' % getCredit(s))
+        print('登陆成功!')
         signin(s)
         message = message + " - 打卡后积分为: %d" % (getCredit(s)) + "\n"
-        print('签到完成，您目前的积分为: %d' % getCredit(s))
+        print('签到完成!')
         message0 = title + message
         if TELEGRAMBOT_TOKEN and TELEGRAMBOT_CHATID:
+            print('检测到 TGBot 配置信息，正在尝试 TGBot 推送')
             telegrambot_sendmessage(message0)
-        if QMSG_KEY:
+            #  TGBot 推送结果分析
+        # if QMSG_KEY:
+            print('检测到 Qmsg 配置信息，正在尝试 Qmsg 酱推送')
             qmsg_sendmessage(message0)
+            #  Qmsg 推送结果分析
