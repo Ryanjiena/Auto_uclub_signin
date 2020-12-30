@@ -41,13 +41,13 @@ jobs:
       - name: "Signin"
         run: |
           date
-          users_array = ($(echo ${USERS} | tr ';' ' '))
+          users_array=($(echo ${USERS} | tr ';' ' '))
 
           if [ "${users_array}" ]; then
               user_count = 1
               for user in ${users_array[@]}; do
-                  username = $(echo ${user} | awk -F'----' '{print $1}')
-                  passwd = $(echo ${user} | awk -F'----' '{print $2}')
+                  username=$(echo ${user} | awk -F'----' '{print $1}')
+                  passwd=$(echo ${user} | awk -F'----' '{print $2}')
 
                   if [ -z "${username}" ] || [ -z "${passwd}" ]; then
                       echo "账号信息配置异常，请检查配置" && exit 1
