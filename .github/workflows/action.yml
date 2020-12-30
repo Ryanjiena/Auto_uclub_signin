@@ -51,10 +51,10 @@ jobs:
                   fi
 
                   echo -e '# 用户 ${user_count}\n'
-                  python3 note163.py <<EOF
-                    ${user_list[$i]}
-                    ${pwd_list[$i]}
-                  EOF
+                  python3 note163.py <<-EOF
+${user_list[$i]}
+${pwd_list[$i]}
+EOF
                   user_count=$(expr ${user_count} + 1)
               done
           else
