@@ -12,6 +12,10 @@ TELEGRAMBOT_CHATID = os.environ["TELEGRAMBOT_CHATID"]
 username = ""
 password = ""
 
+if(username == "", password == ""):
+    username = input("账号:")
+    password = input("密码:")
+
 HEADERS = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                   "Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.66",
@@ -89,14 +93,6 @@ if __name__ == '__main__':
     title = "UCloud Uclub 社区今日打卡情况"
     message = "\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + username + "\n"
     if not s:
-<<<<<<< Updated upstream
-        message = message + " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
-        print('登陆失败!')
-        message0 = title + message
-    else:
-        message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
-        print('登陆成功!')
-=======
         message = message + " - 打卡日志：登录失败，请检查你的登录信息是否准确!" + "\n"
         print('')
         print('登录失败!')
@@ -105,7 +101,6 @@ if __name__ == '__main__':
         message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
         print('')
         print('登录成功!')
->>>>>>> Stashed changes
         signin(s)
         message = message + " - 打卡后积分为: %d" % (getCredit(s)) + "\n"
         print('签到完成!')

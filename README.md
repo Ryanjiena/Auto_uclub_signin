@@ -1,14 +1,10 @@
-# Auto_uclub_signin
-Ucloud Uclub每日自动签到
+# UCloud Uclub 社区自动签到
 
-如何使用：
-Fork本项目，Secrets添加环境变量`USERNAME`和`PASSWORD`
+![Uclub Auto Signin](https://github.com/Ryanjiena/Auto_uclub_signin/workflows/Uclub%20Auto%20Signin/badge.svg)
 
-不支持多用户，不支持微信/Github登陆方式。
+<details>
+   <summary>目录</summary>
 
-<<<<<<< Updated upstream
-本项目失效可能不会再维护。
-=======
 - [UCloud Uclub 社区自动签到](#ucloud-uclub-社区自动签到)
   - [特点](#特点)
     - [已实现](#已实现)
@@ -34,7 +30,7 @@ Fork本项目，Secrets添加环境变量`USERNAME`和`PASSWORD`
 ### 已实现
 
 - 支持使用配置文件读取账户信息
-- 支持一日二次签到（9 点，21 点）
+- 支持一日二次签到（7 点，19 点）
 - 支持多用户（暂只支持手机号密码登录方式）
 - 支持推送签到信息到 QQ、微信和 Telegram（需配置 TelegramBot、Server 酱和 Qmsg 酱）
 - 自动同步上游代码
@@ -64,7 +60,7 @@ Fork 该仓库，进入仓库后点击 `Settings`，右侧栏点击 `Secrets`，
 
 ### 运行签到
 
-定时任务将于每天早上 `9:00` 分和晚上 `21:00` 执行，如果需要修改请编辑 `.github/workflows/action.yaml` 中 `on.schedule.cron` 的值（注意，该时间时区为国际标准时区，国内时间需要 -8 Hours）。
+定时任务将于每天早上 `7:00` 分和晚上 `19:00` 执行，如果需要修改请编辑 `.github/workflows/action.yaml` 中 `on.schedule.cron` 的值（注意，该时间时区为国际标准时区，国内时间需要 -8 Hours）。
 
 > Fork 后的项目 Github Actions 默认处于关闭状态，需要手动开启 Actions，执行一次工作流。后续定时任务(cron)才会自动执行。具体操作信息看：[关于定时任务不执行](#关于定时任务不执行)。
 
@@ -72,7 +68,6 @@ Fork 该仓库，进入仓库后点击 `Settings`，右侧栏点击 `Secrets`，
 
 ```bash
 2020-12-30 09:00:06
-
 ## 正在签到第 1 个用户:
 账号:密码:
 登陆成功!
@@ -169,4 +164,3 @@ Fork 该仓库，进入仓库后点击 `Settings`，右侧栏点击 `Secrets`，
 Copyright (c) Microsoft Corporation. All rights reserved.
 
 Licensed under the [MIT](https://github.com/Ryanjiena/Auto_uclub_signin/blob/main/LICENSE) license.
->>>>>>> Stashed changes
