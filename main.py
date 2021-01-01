@@ -89,12 +89,23 @@ if __name__ == '__main__':
     title = "UCloud Uclub 社区今日打卡情况"
     message = "\n\n - 打卡时间：" + v_time + "\n - 打卡用户：" + username + "\n"
     if not s:
+<<<<<<< Updated upstream
         message = message + " - 打卡日志：登陆失败，请检查你的登录信息是否准确!" + "\n"
         print('登陆失败!')
         message0 = title + message
     else:
         message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
         print('登陆成功!')
+=======
+        message = message + " - 打卡日志：登录失败，请检查你的登录信息是否准确!" + "\n"
+        print('')
+        print('登录失败!')
+        message0 = title + message
+    else:
+        message = message + " - 打卡前积分为: %d" % (getCredit(s)) + "\n"
+        print('')
+        print('登录成功!')
+>>>>>>> Stashed changes
         signin(s)
         message = message + " - 打卡后积分为: %d" % (getCredit(s)) + "\n"
         print('签到完成!')
