@@ -76,6 +76,10 @@ def qmsg_sendmessage(bot_message):
     response = requests.get(send_message)
     # print(response.json())
 
+def qmsg_sendgroupmessage(bot_message):
+    send_message = 'https://qmsg.zendee.cn/group/' + QMSG_KEY + '?msg=' + bot_message
+    response = requests.get(send_message)
+    # print(response.json())  
 
 def sc_sendmessage(bot_title, bot_message):
     send_message = 'https://sc.ftqq.com/' + PUSH_KEY + \
@@ -114,6 +118,7 @@ if __name__ == '__main__':
     if QMSG_KEY:
         print('检测到 Qmsg 配置信息，正在尝试 Qmsg 酱推送')
         qmsg_sendmessage(message0)
+        qmsg_sendgroupmessage(message0)
         # Qmsg 酱推送结果分析
     # Server 酱推送
     if PUSH_KEY:
