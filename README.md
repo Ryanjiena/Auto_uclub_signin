@@ -30,10 +30,11 @@
 ### 已实现
 
 - 支持使用配置文件读取账户信息
-- 支持一日二次签到（9 点，21 点）
 - 支持多用户（暂只支持手机号密码登录方式）
 - 支持推送签到信息到 QQ、微信和 Telegram（需配置 TelegramBot、Server 酱和 Qmsg 酱）
 - 自动同步上游代码
+- 支持随机时间签到（内测）
+- 支持设置代理（内测）
 
 ### TODO
 
@@ -41,6 +42,7 @@
 - [ ] 支持登录验证码
 - [ ] 账号脱敏处理
 - [ ] 多线程签到
+- [ ] 云灌水、云发帖
 
 ## 使用方法
 
@@ -160,7 +162,5 @@ Fork 该仓库，进入仓库后点击 `Settings`，右侧栏点击 `Secrets`，
 - [CokeMine](https://github.com/CokeMine)/[Auto_uclub_signin](https://github.com/CokeMine/Auto_uclub_signin)
 
 ## License
-
-Copyright (c) Microsoft Corporation. All rights reserved.
 
 Licensed under the [MIT](https://github.com/Ryanjiena/Auto_uclub_signin/blob/main/LICENSE) license.
