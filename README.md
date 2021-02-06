@@ -33,11 +33,12 @@
 - 支持多用户（暂只支持手机号密码登录方式）
 - 支持推送签到信息到 QQ、微信和 Telegram（需配置 TelegramBot、Server 酱和 Qmsg 酱）
 - 自动同步上游代码
-- 支持随机时间签到（内测）
-- 支持设置代理（内测）
+- 支持随机时间签到（避免被检测为机器人签到，内测中）
+- 支持设置代理（避免被检测为机器人签到，内测）
 
 ### TODO
 
+- [ ] 使用 shell 重写
 - [ ] 分析签到信息和推送结果
 - [ ] 支持登录验证码
 - [ ] 账号脱敏处理
@@ -57,6 +58,7 @@ Fork 该仓库，进入仓库后点击 `Settings`，右侧栏点击 `Secrets`，
 | `QMSG_KEY`           | `e6fxxxxxxxxxxxx`                  | QQ 推送 ，填写自己申请[Qmsg 酱](https://qmsg.zendee.cn/me.html#/)的 `QMSG_KEY`         | 可选                   |
 | `TELEGRAMBOT_TOKEN`  | `123456:ABC-DEF1234xxx-xxx123ew11` | TGBot 推送，填写自己向[@BotFather](https://t.me/BotFather) 申请的 `Bot Token`          | 可选，和下面的一起使用 |
 | `TELEGRAMBOT_CHATID` | `11xxxxxx03`                       | TGBot 推送，填写[@getuseridbot](https://t.me/getuseridbot)私聊获取到的纯数字 `CHAT_ID` | 可选，和上面一起使用   |
+| `HTTP_PROXY`         | `http://127.0.0.0.1:7890`          | 设置代理（避免被检测为机器人签到，内测）                                                 | 必填                  |
 
 > TGBot 推送相关参数获取步骤可以点击 [TGBot 推送相关参数获取](#TGBot 推送相关参数获取) 查看。
 
